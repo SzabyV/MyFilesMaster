@@ -1,0 +1,362 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Open+Sans:wght@300;400;500;600;700;800&display=swap');
+
+*{
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+:root{
+    --primary: #029ae0;
+    --primary-100: #073044;
+    --primary-200: #415A66;
+    --primary-300: #017CB3;
+    --primary-400: #50B6e6;
+    --background: #202124;
+    --background-100: #26282b;
+    --background-200: #3b3c3f;
+    --font-small:14px;
+    --font-medium:30px;
+    --font-large:60px;
+}
+
+
+body{
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-template-areas: 'sidebar content';
+    height: 100vh;
+    background-color: var(--background);
+    color: #fff;
+    
+}
+
+button{
+    padding: 8px 15px;
+    cursor: pointer;
+    height: 40px;
+    font-size: 14px;
+    background-color: var(--primary);
+    color: white;
+    border-radius: 100px;
+    border: none;
+}
+
+/* Sidebar */
+#sidebar{
+    background-color: var(--background-100);
+    display: flex;
+    flex-direction: column ;
+    row-gap: 40px;
+    padding: 25px;
+}
+
+
+
+#company-logo{
+    height: 65px;
+}
+
+#nav-buttons{
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+}
+
+#nav-buttons li{
+    list-style-type: none;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    
+}
+#nav-buttons li:hover{
+    background-color: var(--primary);   
+}
+
+/* Main */
+#content header{
+    padding: 30px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;    
+}
+
+#content header button:hover{
+    background-color: var(--primary-400);  
+}
+
+.project-card{
+    background-color: var(--background-100);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.project-card:hover{
+    outline: 2px solid var(--primary);
+}
+
+.card-header{
+    display: flex;
+    column-gap: 20px;
+    padding: 15px 20px;
+    align-items: center;
+    justify-content: start;
+    border-bottom: 2px solid #3b3c3f;
+    height: 60px;
+}
+
+.card-content{
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column ;
+    row-gap: 20px;
+    align-items: start;
+}
+
+.card-property{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.property-name{
+    color: #969696;
+}
+
+.project-initials{
+    background-color: orange;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+#projects-list{
+    padding: 50px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    grid-template-rows: 300px;
+    gap: 30px;
+}
+
+/* Form Styles */
+form{
+    width:450px;
+    border-radius:  10px;
+    background-color: var(--background-100);
+    color:white;
+}
+
+form h2{
+    padding: 20px;
+    border-bottom: 2px solid var(--background-100);
+}
+
+form .input-list{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    row-gap: 25px;
+}
+
+form .form-field-container{
+    display: flex;
+    flex-direction: column;
+}
+
+dialog {
+    background-color: transparent;
+    border: none;
+    margin: auto;
+}
+
+dialog::backdrop{
+    background-color: rgba(0,0,0,0.5);
+    backdrop-filter: blur(3px);
+}
+
+input, textarea, select{
+    color:white;
+    background-color: var(--background-200);
+    padding: 15px;
+    border-radius: 8px;
+    border:none;
+    font-size: var(--font-small);
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: 2px solid var(--primary)
+}
+
+.icon-text{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 5px;
+    gap: 5px;
+}
+
+.tip{
+    color: var(--background-200);
+}
+
+.cancel{
+    background-color: var(--background-100);
+}
+
+.ok{
+    background-color: green;
+}
+
+.form-button-container{
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+    padding: 30px 20px;
+}
+
+#project-details{
+    display: none;
+}
+
+#users-page{
+    display: none;
+}
+
+/* Project details page */
+
+.dashboard-card{
+    background-color: var(--background-100);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    flex-grow: 1;
+}
+
+#project-details > .main-page-content{
+    display: grid;
+    padding: 20px 40px;
+    gap: 30px;
+    grid-template-columns: 400px 1fr;
+    height: 100%;
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    
+}
+  
+.btn-secondary {
+    background-color: transparent; 
+    outline: 2px solid #969696; 
+    width: 100px; 
+    text-align: center;
+  }
+  
+.btn-secondary:hover {
+    background-color: var(--primary); 
+    outline: none;
+  }
+
+  .todo-item {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: var(--background-200);
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  
+  .todo-item:hover {
+    background-color: var(--primary);
+  }
+
+
+
+.user, .table-header{
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr 0.5fr;
+    width: 100%;
+    padding: 20px;
+    background-color: var(--background-200);
+    justify-items: center;
+    align-items: center;
+    border-radius: 20px;
+}
+
+.user:hover{
+    background-color: var(--primary-200);
+}
+
+.user:hover button{
+    
+    background-color: var(--primary-200);
+}
+.user img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    
+}
+
+.user-list {
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    gap: 10px;
+    flex-grow: 1;  
+}
+
+
+
+.table-header{
+    background-color: var(--background-100);
+}
+.table-header p{
+    color: lightgray;
+}
+
+.user button{
+    color: var(--background-100);
+    background-color: var(--background-200);
+}
+
+.user button:hover{
+    color: white;
+    background-color: var(--primary);
+}
+
+#error-popup{
+    margin-top: 200px;
+    background-color: var(--background-200);
+    border-radius: 30px;
+    
+    padding: 20px 40px;
+    color:white
+}
+
+#error-popup div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    padding: 10px 20px;
+    background-color: var(--background-200);
+}
+
+.transparent-background-btn{
+    background-color: var(--background  );
+}
+
+
+

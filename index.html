@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<body>
+    <aside id="sidebar">
+        <img id="company-logo" src="./assets/company-logo.svg" alt="Construction Company Logo">
+        <ul id="nav-buttons">
+            <li id="projects-page-btn">
+                
+                <span class="material-symbols-outlined" >
+                    apartment
+                </span>
+                Projects
+            
+            </li>
+            <li>
+                <span class="material-symbols-outlined">
+                    group
+                    </span>
+                    Users
+            </li>
+        </ul>
+    </aside>
+    <main id="content">
+        <div class = "page" id="projects-page">
+            <dialog id="new-project-modal">
+                <form id = "new-project-form">
+                        <h2>New Project</h2>
+                    <div class = "input-list">
+                        <div class="form-field-container">
+                            <div class = "icon-text">
+                                <span class="material-symbols-outlined">
+                                    home_work
+                                </span>
+                                <label>Name</label>
+                            </div>
+                            
+                            <input name = "name" type="text">
+                            <p class="tip">TIP: write something memorable</p>
+                        </div>
+                        <div class="form-field-container"></div>
+                            <div class = "icon-text">
+                                <span class="material-symbols-outlined">
+                                    description
+                                </span>
+                                <label>Description</label>
+                            </div> 
+                            <textarea name = "description" cols="30" rows="5" placeholder="Give your description"></textarea>
+                         
+                        <div class="form-field-container">
+                            <div class = "icon-text">
+                                <span class="material-symbols-outlined">
+                                    engineering
+                                </span>
+                                <label >Role</label>
+                            </div>
+                            <select name = "userRole">
+                                <option>Architect</option>
+                                <option>Engineer</option>
+                                <option>Developer</option>
+                            </select>
+                        </div>
+                        <div class="form-field-container">
+                            <div class = "icon-text">
+                                <span class="material-symbols-outlined">
+                                    question_mark
+                                </span>
+                                <label>Status</label>
+                            </div>
+                            <select name = "status">
+                                <option>Pending</option>
+                                <option>Active</option>
+                                <option>Finished</option>
+                            </select>
+                        </div>
+                        <div class="form-field-container">
+                            <div class = "icon-text">
+                                <span class="material-symbols-outlined">
+                                    calendar_month
+                                </span>
+                                <label>Date</label>
+                            </div>
+                            <input name = "finishDate" type="date" class="date" min="2018-01-01" max="2018-12-31" />
+                        </div>
+                    </div>
+                    <div class="form-button-container">
+                        <button type = "button" class="cancel">Cancel</button>
+                        <button type = "submit" class="ok">Accept</button>
+                    </div>
+                </form>
+    
+            </dialog>
+            <dialog id="error-popup">
+                <form>
+                    <div>
+                        <h3>Error</h3>
+                        <p>Error Message</p>
+                    </div>
+                    <div>
+                        <button type = "submit" class="ok">Ok</button>
+                    </div>
+                </form>
+            </dialog>
+    
+            <header>
+                <h2>Projects</h2>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button id="export-projects-btn" class = transparent-background-btn>
+                    <span  class="material-symbols-outlined">
+                        download
+                        </span>
+                    </button>
+                    <button id="import-projects-btn" class = transparent-background-btn>
+                    <span  class="material-symbols-outlined">
+                        upload
+                        </span>
+                    </button>   
+                    <button id= "new-project-button" style="display: flex; gap: 10px; align-items: center;">
+                        <span class="material-symbols-outlined">
+                            add_business
+                            </span>
+                            New Project
+                    </button>
+                </div>
+            </header>
+            <div id="projects-list"></div>
+        </div>
+        <div class = "page" id="project-details">
+                <header>
+                    <div>
+                        <h2>Hospital Center</h2>
+                        <p style="color: #969696">Community hospital location</p>
+                    </div>
+                </header>
+                <div class = "main-page-content">
+                    <div style = "display: flex; flex-direction: column; gap: 30px">
+                        <div class="dashboard-card">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                                <p style="font-size: 20px; background-color: #ca8134; aspect-ratio: 1; border-radius: 100%; padding: 12px;">HC</p>
+                                <button class="btn-secondary"><p style="width: 100%;">Edit</button>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 30px">
+                                <div>
+                                    <h2>Hospital Center</h2>
+                                    <p>Community hospital located downtown</p>
+                                </div>
+                                <div style="display: flex; column-gap: 30px; justify-content: space-between;">
+                                    <div>
+                                        <p style="color: #969696; font-size: var(--font-small)">Status</p>
+                                        <p>Active</p>
+                                    </div>
+                                    <div>
+                                        <p style="color: #969696; font-size: var(--font-small)">Cost</p>
+                                        <p>2.000.000 Euros</p>
+                                    </div>
+                                    <div>
+                                        <p style="color: #969696; font-size: var(--font-small)">Role</p>
+                                        <p>Engineer</p>
+                                    </div>
+                                    <div>
+                                        <p style="color: #969696; font-size: var(--font-small)">Finish Date</p>
+                                        <p>2023-05-01</p>
+                                    </div>
+                                </div>
+                                <div style="background-color: #404040; border-radius: 9999px; overflow: auto;">
+                                    <div style="width: 80%; background-color: green; padding: 4px 0; text-align: center;">80%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dashboard-card">
+                            <div style="display: flex; gap: 30px;">
+                                <h4>To-Do</h4>
+                                <div style="display: flex; align-items: center; justify-content: end; column-gap: 20px;">
+                                    <div style="display: flex; align-items: center; column-gap: 10px;">
+                                        <span class="material-symbols-outlined">
+                                            search
+                                            </span>
+                                      <input type="text" placeholder="Search To-Do's by name" style="width: 100%;">
+                                    </div>
+                                    <span class="material-symbols-outlined">
+                                        add
+                                        </span>
+                                </div>
+                            </div>
+                            <div style = "display: flex; padding: 30px 0px;     ">
+                                <div class="todo-item">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div style="display: flex; column-gap: 15px; align-items: center; padding: 0px;">
+                                            <span class="material-symbols-outlined" style="padding: 10px; background-color: #686868; border-radius: 10px;">
+                                                construction
+                                                </span>
+                                                <p>
+                                                    Make anything here as you want, even something longer.
+                                                </p>
+                                        </div>
+                                    </div>
+                                    <p style="text-wrap: nowrap; margin-left: 10px;"> Fri, 20 Sep</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="viewer-container" class="dashboard-card"></div>
+                </div>
+        </div>
+        <div class = "page" id="users-page">
+            <dialog id="new-user-modal">
+                <form> 
+                    <h2>New User</h2>
+                    <div class = "input-list">
+                        <div class="form-field-container">
+                            <div class = "icon-text">
+                                <span class="material-symbols-outlined">
+                                    person
+                                    </span>
+                                <label>First Name</label>
+                            </div>
+                            <input type="text">
+                            
+                        </div>
+                        <div class="form-field-container">
+                            <div class = "icon-text">
+                                <span class="material-symbols-outlined">
+                                    person
+                                    </span>
+                                <label>Last Name</label>
+                            </div>
+                            <input type="text">
+                            
+                        </div>
+
+                        <div class="form-field-container">
+                            <div class = "icon-text">
+                                <span class="material-symbols-outlined">
+                                    person
+                                    </span>
+                                <label>Username</label>
+                            </div>
+                            <input type="text">
+                            
+                        </div>
+
+                        <div class="form-field-container">
+                            <div class = "icon-text">
+                                <span class="material-symbols-outlined">
+                                    calendar_month
+                                </span>
+                                <label>Start Date</label>
+                            </div>
+                            <input type="date" class="date" min="2018-01-01" max="2018-12-31" />
+                        </div>
+
+                        <div class="form-field-container">
+                            <div class = "icon-text">
+                                <span class="material-symbols-outlined">
+                                    engineering
+                                </span>
+                                <label >Role</label>
+                            </div>
+                            <select>
+                                <option>Architect</option>
+                                <option>Engineer</option>
+                                <option>Developer</option>
+                            </select>
+                        </div>
+                        <div class="form-field-container">
+                            <div class = "icon-text">
+                                <span class="material-symbols-outlined">
+                                    question_mark
+                                </span>
+                                <label>Assigned Projects</label>
+                            </div>
+                            <select multiple>
+                                <option>Hospital</option>
+                                <option>Plaza</option>
+                                <option>School</option>
+                            </select>
+                        </div>
+                        
+                    </div>
+                    <div class="form-button-container">
+                        <button class="cancel">Cancel</button>
+                        <button class="ok">Accept</button>
+                    </div>
+                </form>
+    
+            </dialog>
+    
+            <header>
+                <h2>Users</h2>
+                <div >
+                    
+                    <button style="display: flex; align-items: center; gap: 10px">
+                        <span class="material-symbols-outlined">
+                            person_add
+                        </span>
+                            New User
+                    </button>
+                </div>
+            </header>
+
+            <div class="user-list">
+                <div class="table-header">
+                    <p>User</p>
+                    <p>First Name</p>
+                    <p>Last Name</p>
+                    <p>Username</p>
+                    <p>Start Date</p>
+                    <p>Role</p>
+                    <p>Assigned Projects</p>
+                    <p></p>
+                </div>
+                <div class="user">
+                    <img src="https://img.thedailybeast.com/image/upload/dpr_2.0/c_crop,h_1280,w_1280,x_0,y_0/c_limit,w_128/d_placeholder_euli9k,fl_lossy,q_auto/v1677776984/brian-cox_fxi9tg">
+                    <p>Roy</p>
+                    <p>Logan</p>
+                    <p>KingLogan</p>
+                    <p>1950-01-01</p>
+                    <p>Developer</p>
+                    <p>Hospital,Plaza,School</p>
+                    <button>
+                        <span class="material-symbols-outlined">
+                            more_horiz
+                            </span>
+                    </button>
+                </div>
+                <div class="user">
+                    <img src="https://industrialscripts.com/wp-content/uploads/2021/09/Kendall-Roy-Original-Character.jpg" alt="">
+                    <p>Roy</p>
+                    <p>Kendall</p>
+                    <p>$$OG_KennyBuoy$$</p>
+                    <p>2005-01-01</p>
+                    <p>Engineer</p>
+                    <p>School</p>
+                    <button>
+                        <span class="material-symbols-outlined">
+                            more_horiz
+                            </span>
+                    </button>
+                </div>
+                <div class="user">
+                    <img src="https://media-cldnry.s-nbcnews.com/image/upload/newscms/2021_42/3513350/211018-sarah-snook-ew-1212p.jpg" alt="">
+                    <p>Roy</p>
+                    <p>Siobhan</p>
+                    <p>PrincessShiv</p>
+                    <p>2005-01-01</p>
+                    <p>Architect</p>
+                    <p>Plaza</p>
+                    <button>
+                        <span class="material-symbols-outlined">
+                            more_horiz
+                            </span>
+                    </button>
+                </div>
+                <div class="user">
+                    <img src="https://static.spin.com/files/2018/08/roman-roy-succession-1533564730.jpg" alt="">
+                    <p>Roy</p>
+                    <p>Roman</p>
+                    <p>Whatever?IDontCARE</p>
+                    <p>2005-01-01</p>
+                    <p>Architect</p>
+                    <p>Hospital</p>
+                    <button>
+                        <span class="material-symbols-outlined">
+                            more_horiz
+                            </span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script type = "module" src = "./src/index.ts"></script>
+</body>
+</html>
