@@ -17,6 +17,16 @@
     --font-small:14px;
     --font-medium:30px;
     --font-large:60px;
+    --random1:#dd8221;
+    --random2:#00b478;
+    --random3:#e84855;
+    --random4:#0776c0;
+    --random5:#870fb6;
+    --random6:#df19ce;
+
+    --task0:#4ebb96;
+    --task1: #d6d43f;
+    --task2: #bb7265;
 }
 
 
@@ -129,7 +139,6 @@ button{
 }
 
 .project-initials{
-    background-color: orange;
     padding: 5px;
     border-radius: 10px;
 }
