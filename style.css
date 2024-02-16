@@ -5,6 +5,10 @@
     margin: 0;
     padding: 0;
 }
+
+:not(.flex){
+    box-sizing: content-box;
+}
 :root{
     --primary: #029ae0;
     --primary-100: #073044;
@@ -103,6 +107,7 @@ button{
     background-color: var(--background-100);
     border-radius: 8px;
     cursor: pointer;
+    
 }
 
 .project-card:hover{
@@ -139,8 +144,16 @@ button{
 }
 
 .project-initials{
-    padding: 5px;
-    border-radius: 10px;
+    /* padding: 5px; */
+    /* border-radius: 10px; */
+    font-size: 20px;
+    aspect-ratio: 1;
+    border-radius: 100%;
+    padding: 12px;
+    text-transform: uppercase;
+    width: 30px;
+    text-align: center;
+    box-sizing: content-box;
 }
 
 #projects-list{
@@ -247,6 +260,10 @@ input:focus, textarea:focus, select:focus {
     flex-grow: 1;
 }
 
+#viewer-container{
+    padding: 0px;
+}
+
 #project-details > .main-page-content{
     display: grid;
     padding: 20px 40px;
@@ -280,13 +297,15 @@ input:focus, textarea:focus, select:focus {
     align-items: center;
     justify-content: center;
     padding: 20px;
-    background-color: var(--background-200);
+    /*background-color: var(--background-200);*/
+    outline: 2px solid var(--background-200);
     border-radius: 10px;
     cursor: pointer;
   }
   
   .todo-item:hover {
-    background-color: var(--primary);
+    background-color: #26282b;
+    outline: 2px solid var(--primary)
   }
 
 
@@ -366,6 +385,10 @@ input:focus, textarea:focus, select:focus {
 .transparent-background-btn{
     background-color: var(--background  );
 }
+
+/* p [data-project-info="project-initials"]{
+    
+} */
 
 
 

@@ -96,7 +96,7 @@ export class ToDo implements IToDo{
             ${this.name}
         </p>
         </div>
-        </div>
+        
         <p name = 'date' ; style="text-wrap: nowrap; margin-left: 10px;"> ${this.finishDate.toISOString().split("T")[0]}</p>
         </div>`
         }
