@@ -1,5 +1,6 @@
 import { IProject, IToDo, Project, ProjectStatus, ToDo, UserRole, ToDoStatus, UserName } from "./Project";
 import { addOrEditTask,createErrorMessage,checkDate, toggleModal, editTaskModalEvent } from "./Functions";
+import { updateDocument } from "../firebase";
 
 
 
@@ -7,44 +8,55 @@ const possibleColors = getComputedStyle(document.documentElement)
 
 export class ProjectsManager{
     list: Project[] = []
-    ui: HTMLElement 
+    onProjectCreated = (project: Project) => {} 
+    onProjectDeleted = (id:string) => {} 
+    /*
+    constructor(){
+        
+        
+            this.newProject({
+                name: "Project Name",
+                description: "Description",
+                status: "Active",
+                userRole: "Architect",
+                finishDate: new Date("2023-12-08"),
+            })
+        
+    }
+    */
 
-    constructor(container:HTMLElement){
-        this.ui = container
-        const project = this.newProject({
-            name: "Project Name",
-            description: "Description",
-            status: "Active",
-            userRole: "Architect",
-            finishDate: new Date("2023-12-08"),
+    filterProjects(value:string){
+        const filteredProjects = this.list.filter((project)=>{
+            return project.name.includes(value)
         })
-        project.ui.click()
+        return filteredProjects
     }
 
-    newProject(data: IProject){
+    newProject(data: IProject, id?:string,){
         const projectNames = this.list.map((project) => {return project.name})
         const nameInUse = projectNames.includes(data.name)
         if(nameInUse){
             throw new Error(`A project witht the name "${data.name}" already exists`)
         }
 
-        const project = new Project (data);
+        const project = new Project (data, id);
         if(project.ui){
 
             project.ui.addEventListener("click",()=>{
                 const projectsPage = document.getElementById("projects-page")
                 const detailsPage = document.getElementById("project-details")
                 if(!projectsPage || !detailsPage) {return}
-                projectsPage.style.display = "none"
-                detailsPage.style.display = "flex"
+                //projectsPage.style.display = "none"
+                //detailsPage.style.display = "flex"
                 this.setDetailsPage(project)
                 this.setTasksList(project)
             })
 
-            this.list.push(project);
-            this.ui.append(project.ui)
-            return project;
+            
         }
+        this.list.push(project);
+        this.onProjectCreated(project)
+        return project;
     }
 
     private setDetailsPage(project: Project) {
@@ -106,19 +118,22 @@ export class ProjectsManager{
         //const oldProject = project
         if(project)
         {
+            project[id] = id
             for (const key in data){
                 //if(!project[key] === data[key])
                     project[key] = data[key]
+                    updateDocument<Partial<IProject>>("/projects", id, data)
                 
             }
             //need to delete old project, because id is unique
-            this.deleteProject(id)
+            //this.deleteProject(id)
 
         //const project = this.getProjectByName(data.name as string) as Project
             this.setDetailsPage(project)
-            project.ui = null
+            //project.ui = null
             //project.ui.remove() // vmiert nem torli ki a ui-t
-            project.setUI()
+            //project.setUI()
+            /*
             if(project.ui)
                 project.ui.addEventListener("click",()=>{
                     const projectsPage = document.getElementById("projects-page")
@@ -129,6 +144,7 @@ export class ProjectsManager{
                     this.setDetailsPage(project)
                     this.setTasksList(project)
                 })
+                */
             this.list.push(project)
             if(project.ui)
                 this.ui.append(project.ui)
@@ -148,6 +164,7 @@ export class ProjectsManager{
             return project.id !== id
         })
         this.list = remaining
+        this.onProjectDeleted(id)
     }
 
     getProjectByName(name:string){

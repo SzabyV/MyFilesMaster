@@ -17,7 +17,7 @@ export interface IProject{
     finishDate: Date 
 }
 
-var getInitials = function (string) {
+export function getInitials (string) {
     var names = string.split(' '),
         initials = names[0].substring(0, 1);
     
@@ -111,7 +111,6 @@ export class Project implements IProject{
     finishDate: Date 
 
     //Internal properties
-    ui: HTMLElement | null
     cost: number = 0
     progress: number = 0
     id: string
@@ -119,7 +118,7 @@ export class Project implements IProject{
     backgroundColor: number
     todos: ToDo[] = []
 
-    constructor(data: IProject){
+    constructor(data: IProject, id = uuidv4()){
 
         for (const key in data){
             this[key] = data[key]
@@ -138,8 +137,7 @@ export class Project implements IProject{
         // this.status = data.status;
         // this.userRole = data.userRole;
         // this.finishDate = data.finishDate;
-        this.id = uuidv4();
-        this.setUI();
+        this.id = id;
     }
     //
 
@@ -165,37 +163,6 @@ export class Project implements IProject{
         this.todos = []
     }
 
-    setUI() {
-        if(this.ui instanceof HTMLDivElement) {return}
-        this.ui = document.createElement("div");
-        this.ui.className = "project-card"
-        this.ui.innerHTML = `
-        <div class="card-header">
-        <p class = "project-initials" style="font-size: 20px; aspect-ratio: 1; width: 30px; text-align: center; border-radius: 100%; padding: 12px; background-color: ${possibleColors.getPropertyValue('--random'+this.backgroundColor)}; text-transform: uppercase; ")>${this.initials}</p>
-        <div>
-            <h5 id="project-name">${this.name}</h2>
-            <p id="project-description">${this.description}</p>
-        </div>   
-        </div>
-        <div class="card-content">
-        <div class = "card-property">
-            <p class = "property-name">Status</p>
-            <p>${this.status}</p>
-        </div>
-        <div class = "card-property">
-            <p class = "property-name">Role</p>
-            <p>${this.userRole}</p>
-        </div>
-        <div class = "card-property">
-            <p class = "property-name">Cost</p>
-            <p>$${this.cost}</p>
-        </div>
-        <div class = "card-property">
-            <p class = "property-name">Estimated Progress</p>
-            <p> ${this.progress}</p>
-        </div>
-        </div>`
-        }
 
     
         

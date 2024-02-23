@@ -34,7 +34,7 @@
 }
 
 
-body{
+#app{
     display: grid;
     grid-template-columns: 300px 1fr;
     grid-template-areas: 'sidebar content';
@@ -92,14 +92,14 @@ button{
 }
 
 /* Main */
-#content header{
+#app header{
     padding: 30px 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;    
 }
 
-#content header button:hover{
+#app header button:hover{
     background-color: var(--primary-400);  
 }
 
