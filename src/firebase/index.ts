@@ -34,4 +34,9 @@ export async function updateDocument<T extends Record<string, any>>(path: string
     await Firestore.updateDoc(doc, data)
 }
 
+export async function createDocument<T>(path:string, data: T){
+    const projectsCollection = getCollection<T>(path)
+    await Firestore.addDoc(projectsCollection, data)
+}
+
 //updateDocument<Partial<IProject>>("/projects", "id", {name:"New Project Name"})

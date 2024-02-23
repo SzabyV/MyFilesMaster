@@ -1,33 +1,21 @@
-import { IProject, IToDo, Project, ProjectStatus, ToDo, UserRole, ToDoStatus, UserName } from "./Project";
-import { addOrEditTask,createErrorMessage,checkDate, toggleModal, editTaskModalEvent } from "./Functions";
-import { updateDocument } from "../firebase";
-
-
+import { IProject, Project, ProjectStatus, UserRole} from "./Project";
+import {IToDo, ToDo, ToDoStatus, UserName} from "./ToDo"
+import { addOrEditTask,createErrorMessage,checkDate, toggleModal, editTaskModalEvent } from "./Utilities";
+import * as Firebase from "../firebase";
+import * as Firestore from "firebase/firestore";
 
 const possibleColors = getComputedStyle(document.documentElement) 
 
 export class ProjectsManager{
     list: Project[] = []
-    onProjectCreated = (project: Project) => {} 
-    onProjectDeleted = (id:string) => {} 
-    /*
-    constructor(){
+    onProjectCreated = (project: Project) => {
         
-        
-            this.newProject({
-                name: "Project Name",
-                description: "Description",
-                status: "Active",
-                userRole: "Architect",
-                finishDate: new Date("2023-12-08"),
-            })
-        
-    }
-    */
+    } 
+    onProjectDeleted = () => {} 
 
     filterProjects(value:string){
         const filteredProjects = this.list.filter((project)=>{
-            return project.name.includes(value)
+            return project.name.toLowerCase().includes(value.toLowerCase())
         })
         return filteredProjects
     }
@@ -40,69 +28,11 @@ export class ProjectsManager{
         }
 
         const project = new Project (data, id);
-        if(project.ui){
-
-            project.ui.addEventListener("click",()=>{
-                const projectsPage = document.getElementById("projects-page")
-                const detailsPage = document.getElementById("project-details")
-                if(!projectsPage || !detailsPage) {return}
-                //projectsPage.style.display = "none"
-                //detailsPage.style.display = "flex"
-                this.setDetailsPage(project)
-                this.setTasksList(project)
-            })
-
-            
-        }
         this.list.push(project);
         this.onProjectCreated(project)
         return project;
     }
-
-    private setDetailsPage(project: Project) {
-        const detailsPage = document.getElementById("project-details")
-        if (!detailsPage) {return}
-        const names = detailsPage.querySelectorAll("[data-project-info = 'name']")
-        if(names) {names.forEach((name) => name.textContent = project.name)}
-        const descriptions = detailsPage.querySelectorAll("[data-project-info = 'description']")
-        if(descriptions) {descriptions.forEach((description) =>description.textContent = project.description)}
-        const status = detailsPage.querySelector("[data-project-info = 'status']")
-        if(status) {status.textContent = project.status}
-        const cost = detailsPage.querySelector("[data-project-info = 'cost']")
-        if(cost) {cost.textContent = "$" + project.cost as string}
-        const userRole = detailsPage.querySelector("[data-project-info = 'userRole']")
-        if(userRole) {userRole.textContent = project.userRole}
-        const finishDate = detailsPage.querySelector("[data-project-info = 'finishDate']") as HTMLElement
-        if(finishDate) {finishDate.textContent = project.finishDate.toISOString().split("T")[0]}
-        const initials = detailsPage.querySelector("[data-project-info = 'project-initials']") as HTMLElement
-        if(initials) {
-            initials.textContent = project.initials as string
-            initials.style.backgroundColor = possibleColors.getPropertyValue('--random'+project.backgroundColor);
-            
-        }
-        const progress = detailsPage.querySelector("[data-project-info = 'progress']") as HTMLElement
-        if(progress) {progress.innerHTML = "<div data-project-info='progress-bar' style='width: 80%; background-color: green; padding: 4px 0;'></div>" + project.progress as string;
-            const progressBar = detailsPage.querySelector("[data-project-info = 'progress-bar']") as HTMLElement
-            progressBar.style.width = project.progress as string + "%";
-        }
-
-
-    }
-
-    private setTasksList(project:Project)
-    {
-        const taskList = document.getElementById("task-list") as HTMLElement
-        project.todos.forEach(element=> {
-            if(element.ui){
-                taskList.append(element.ui)
-                element.ui.addEventListener("click",()=>editTaskModalEvent(element))
-            }
-        });
-        
-    }
-
-    
-
+  
     getProject(id:string){
         const project = this.list.find((project)=>{
             return project.id === id
@@ -111,60 +41,28 @@ export class ProjectsManager{
     }
 
     editProject(id:string, data: IProject){ 
-        //this.deleteProject(id)
-        //this.newProject(data)
-
         const project = this.getProject(id)
-        //const oldProject = project
         if(project)
         {
-            project[id] = id
+            //project[id] = id
             for (const key in data){
                 //if(!project[key] === data[key])
-                    project[key] = data[key]
-                    updateDocument<Partial<IProject>>("/projects", id, data)
-                
-            }
-            //need to delete old project, because id is unique
-            //this.deleteProject(id)
-
-        //const project = this.getProjectByName(data.name as string) as Project
-            this.setDetailsPage(project)
-            //project.ui = null
-            //project.ui.remove() // vmiert nem torli ki a ui-t
-            //project.setUI()
-            /*
-            if(project.ui)
-                project.ui.addEventListener("click",()=>{
-                    const projectsPage = document.getElementById("projects-page")
-                    const detailsPage = document.getElementById("project-details")
-                    if(!projectsPage || !detailsPage) {return}
-                    projectsPage.style.display = "none"
-                    detailsPage.style.display = "flex"
-                    this.setDetailsPage(project)
-                    this.setTasksList(project)
-                })
-                */
-            this.list.push(project)
-            if(project.ui)
-                this.ui.append(project.ui)
-        }
-        else{
-            console.log("project not found")
+                    project[key] = data[key]  
+            }  
+            Firebase.updateDocument<Partial<IProject>>("/projects", id, data)
         }
     }
 
-    deleteProject(id:string) {
+    async deleteProject(id:string) {
         const project = this.getProject(id)
         if(!project) {return}
-        if(project.ui)
-            project.ui.remove()
 
         const remaining = this.list.filter((project) =>{
             return project.id !== id
         })
         this.list = remaining
-        this.onProjectDeleted(id)
+        await Firebase.deleteDocument("/projects",id)
+        this.onProjectDeleted()
     }
 
     getProjectByName(name:string){

@@ -1,5 +1,6 @@
 import { ProjectsManager } from "./ProjectsManager";
-import { ToDo, IToDo, ToDoStatus, UserName, Project } from "./Project";
+import { Project } from "./Project";
+import {ToDo, IToDo, ToDoStatus, UserName} from "./ToDo"
 
 var modalShown = false;
 var errorShown = false;
@@ -15,10 +16,15 @@ export function checkDate(formData: FormData){
     return finishDate
 }
 
+export function capitalizeFirstLetter(string) {
+    return string[0].toUpperCase() + string.slice(1);
+}
+
 export const toggleModal = (id:string) =>{
     
     const modal = document.getElementById(id);
     if(modal && modal instanceof HTMLDialogElement){
+        modalShown= modal.checkVisibility()
         if(modalShown === true){
             modal.close();
             modalShown = false;

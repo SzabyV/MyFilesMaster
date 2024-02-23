@@ -22,8 +22,7 @@ export function ProjectDetails(props:Props){
   if(!project) {return (<p>The project with ID {id} was not found</p>)}
 
   const navigateTo = Router.useNavigate()
-  props.projectsManager.onProjectDeleted = async (id) => {
-    await deleteDocument("/projects",id)
+  props.projectsManager.onProjectDeleted = () => {
     navigateTo("/")
   }
   
@@ -39,9 +38,8 @@ export function ProjectDetails(props:Props){
             </p>
           </div>
         </header>
-        <div className="main-page-content">
-          
-          <div style={{ display: "flex", flexDirection: "column", gap: 30 }}>
+        <div className="main-page-content" style={{ display: "flex", flexDirection: "row", gap: 30 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 30, minWidth: "450px" }}>
           <ProjectDashboardCard project = {project} projectsManager={props.projectsManager}></ProjectDashboardCard> 
           <ToDosDashboardCard></ToDosDashboardCard>  
           </div>

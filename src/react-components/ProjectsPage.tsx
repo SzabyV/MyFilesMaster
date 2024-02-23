@@ -1,5 +1,5 @@
 import * as React from "react"
-import { checkDate, toggleModal, createErrorMessage } from "../class/Functions"
+import { checkDate, toggleModal, createErrorMessage } from "../class/Utilities"
 import {IProject, ProjectStatus, UserRole, Project} from "../class/Project"
 import { ProjectsManager } from "../class/ProjectsManager"
 import { ProjectCard } from "./ProjectCard"
@@ -8,8 +8,10 @@ import { SearchBox } from "./SearchBox"
 import * as Firestore  from "firebase/firestore"
 import { firebaseDB } from "../firebase"
 import { getCollection } from "../firebase"
+import { ProjectModal } from "./ProjectModal"
 
 var modalShown = false;
+
 
 const projectsCollection = getCollection<IProject>("/projects")
 
@@ -19,6 +21,7 @@ interface Props {
 
 export function ProjectsPage(props:Props){
     
+    const [showModalComponent, setShowModalComponent] = React.useState(false);
     const [projects, setProjects] = React.useState<Project[]>(props.projectsManager.list)
     props.projectsManager.onProjectCreated = () => {setProjects([...props.projectsManager.list])}
     
@@ -59,21 +62,14 @@ export function ProjectsPage(props:Props){
         console.log("Projects state updated", projects)
     }, [projects])
 
-    const onNewProjectClick = (id:string) =>{
-        const modal = document.getElementById(id);
-    if(modal && modal instanceof HTMLDialogElement){
-        if(modal.checkVisibility()){
-            modal.close();
-            modalShown = false;
-        }
-        else{
-            modal.showModal();
-        }
+    const onNewProjectClick = () =>{
+        setShowModalComponent(true)
     }
-    else{
-        console.warn("the provided modal was not found, man. ID: ",id)
+
+    function closeModal(){
+        setShowModalComponent(false)
     }
-    }
+        
 
     const onFormSubmit = (event: React.FormEvent) =>{
         event.preventDefault();
@@ -93,7 +89,7 @@ export function ProjectsPage(props:Props){
         if(projectData.name.length > 5)
         {
             try{
-                Firestore.addDoc(projectsCollection, projectData)
+                
                 const project = props.projectsManager.newProject(projectData);
                 projectForm.reset();
                 const modal = document.getElementById("new-project-modal")
@@ -119,6 +115,9 @@ export function ProjectsPage(props:Props){
         props.projectsManager.importFromJSON()
     }
 
+    
+
+
 
  const onProjectSearch = (value:string) =>{
     
@@ -127,76 +126,8 @@ export function ProjectsPage(props:Props){
     
  return(
     <div className="page" id="projects-page">
-        <dialog id="new-project-modal">
-            <form onSubmit = {(e) =>onFormSubmit(e)}id="new-project-form">
-            <h2>New Project</h2>
-            <div className="input-list">
-                <div className="form-field-container">
-                <div className="icon-text">
-                    <span className="material-symbols-outlined">home_work</span>
-                    <label>Name</label>
-                </div>
-                <input name="name" type="text" />
-                <p className="tip">TIP: write something memorable</p>
-                </div>
-                <div className="form-field-container" />
-                <div className="icon-text">
-                <span className="material-symbols-outlined">description</span>
-                <label>Description</label>
-                </div>
-                <textarea
-                name="description"
-                cols={30}
-                rows={5}
-                placeholder="Give your description"
-                defaultValue={""}
-                />
-                <div className="form-field-container">
-                <div className="icon-text">
-                    <span className="material-symbols-outlined">engineering</span>
-                    <label>Role</label>
-                </div>
-                <select name="userRole">
-                    <option>Architect</option>
-                    <option>Engineer</option>
-                    <option>Developer</option>
-                </select>
-                </div>
-                <div className="form-field-container">
-                <div className="icon-text">
-                    <span className="material-symbols-outlined">question_mark</span>
-                    <label>Status</label>
-                </div>
-                <select name="status">
-                    <option>Pending</option>
-                    <option>Active</option>
-                    <option>Finished</option>
-                </select>
-                </div>
-                <div className="form-field-container">
-                <div className="icon-text">
-                    <span className="material-symbols-outlined">calendar_month</span>
-                    <label>Date</label>
-                </div>
-                <input
-                    name="finishDate"
-                    type="date"
-                    className="date"
-                    min="2018-01-01"
-                    max="2058-12-31"
-                />
-                </div>
-            </div>
-            <div className="form-button-container">
-                <button type="button" className="cancel">
-                Cancel
-                </button>
-                <button type="submit" className="ok">
-                Accept
-                </button>
-            </div>
-            </form>
-        </dialog>
+        {showModalComponent && <ProjectModal id = "new" project = {null} projectsManager={props.projectsManager} onClose = {()=>closeModal()}></ProjectModal>}
+        
   <header>
     <h2>Projects</h2>
     <SearchBox onChange = {(value) => onProjectSearch(value)}></SearchBox>
@@ -207,7 +138,7 @@ export function ProjectsPage(props:Props){
       <button  onClick = {onExportBtnClick} id="export-projects-btn" className="transparent-background-btn">
         <span className="material-symbols-outlined">upload</span>
       </button>
-      <button onClick={()=>onNewProjectClick("new-project-modal")}
+      <button onClick={()=>onNewProjectClick()}
         id="new-project-button"
         style={{ display: "flex", gap: 10, alignItems: "center" }}
       >
